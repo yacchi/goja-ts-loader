@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/dop251/goja"
 	"github.com/dop251/goja_nodejs/require"
-	"github.com/yacchi/goja-ts-loader/assets"
+	"github.com/yacchi/go-ts-transpiler/assets"
 	"io/ioutil"
 	"os"
 	"sync"
