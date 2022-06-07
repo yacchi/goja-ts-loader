@@ -1,8 +1,6 @@
 PACKAGE := goja_ts_loader
 
-ASSETS_DIR := assets
-ASSET_FILES := $(shell find $(ASSETS_DIR) -name "*.js")
-TYPESCRIPT_LIB := $(ASSETS_DIR)/node_modules/typescript.js
+TYPESCRIPT_LIB := transpiler/node_modules/typescript.js
 TYPESCRIPT_LIB_SRC := node_modules/typescript/lib/typescript.js
 
 all:

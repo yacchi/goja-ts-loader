@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/yacchi/go-ts-transpiler/transpiler"
+	"github.com/yacchi/goja-ts-loader/transpiler"
 	"io/ioutil"
 	"os"
 )

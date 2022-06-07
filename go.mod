@@ -1,4 +1,4 @@
-module github.com/yacchi/go-ts-transpiler
+module github.com/yacchi/goja-ts-loader
 
 go 1.16
 

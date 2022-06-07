@@ -1,10 +1,10 @@
-package goja_loader
+package loader
 
 import (
 	"errors"
 	"fmt"
 	"github.com/dop251/goja_nodejs/require"
-	"github.com/yacchi/go-ts-transpiler/transpiler"
+	"github.com/yacchi/goja-ts-loader/transpiler"
 	"path/filepath"
 )
 
@@ -24,29 +24,36 @@ type loaderOption struct {
 	overrides    map[string]string
 	extensions   []string
 	srcSizeLimit map[string]int64
+	tsc          *transpiler.Transpiler
 }
 
-type LoaderOption func(opt *loaderOption)
+type Option func(opt *loaderOption)
 
-func OverrideExtensions(overrides map[string]string) LoaderOption {
+func OverrideExtensions(overrides map[string]string) Option {
 	return func(opt *loaderOption) {
 		opt.overrides = overrides
 	}
 }
 
-func TargetExtensions(extensions []string) LoaderOption {
+func TargetExtensions(extensions []string) Option {
 	return func(opt *loaderOption) {
 		opt.extensions = extensions
 	}
 }
 
-func SourceSizeLimit(limit map[string]int64) LoaderOption {
+func SourceSizeLimit(limit map[string]int64) Option {
 	return func(opt *loaderOption) {
 		opt.srcSizeLimit = limit
 	}
 }
 
-func TSLoader(transpiler *transpiler.Transpiler, base require.SourceLoader, opts ...LoaderOption) require.SourceLoader {
+func WithTranspiler(tsc *transpiler.Transpiler) Option {
+	return func(opt *loaderOption) {
+		opt.tsc = tsc
+	}
+}
+
+func TSLoader(base require.SourceLoader, opts ...Option) require.SourceLoader {
 	o := &loaderOption{
 		overrides:    DefaultOverrideExtensions,
 		extensions:   DefaultTargetExtensions,
@@ -55,6 +62,16 @@ func TSLoader(transpiler *transpiler.Transpiler, base require.SourceLoader, opts
 
 	for _, opt := range opts {
 		opt(o)
+	}
+
+	tsc := o.tsc
+
+	if tsc == nil {
+		if ts, err := transpiler.NewTranspiler(); err != nil {
+			panic(err)
+		} else {
+			tsc = ts
+		}
 	}
 
 	allowExt := map[string]struct{}{}
@@ -87,7 +104,7 @@ func TSLoader(transpiler *transpiler.Transpiler, base require.SourceLoader, opts
 				return src, nil
 			}
 		}
-		if transpiled, err := transpiler.Transpile(path, string(src)); err != nil {
+		if transpiled, err := o.tsc.Transpile(path, string(src)); err != nil {
 			return nil, fmt.Errorf("%s: %w", err, require.InvalidModuleError)
 		} else {
 			return []byte(transpiled), nil

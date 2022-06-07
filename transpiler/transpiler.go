@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/dop251/goja"
 	"github.com/dop251/goja_nodejs/require"
-	"github.com/yacchi/go-ts-transpiler/assets"
 	"io/ioutil"
 	"os"
 	"sync"
@@ -54,7 +53,7 @@ func NewTranspiler() (*Transpiler, error) {
 	vm := goja.New()
 
 	registry := require.NewRegistryWithLoader(func(path string) ([]byte, error) {
-		if f, err := assets.FS.Open(path); err != nil {
+		if f, err := FS.Open(path); err != nil {
 			if os.IsNotExist(err) || errors.Is(err, syscall.EISDIR) {
 				err = require.ModuleFileDoesNotExistError
 			}

@@ -4,19 +4,13 @@ import (
 	"fmt"
 	"github.com/dop251/goja"
 	"github.com/dop251/goja_nodejs/require"
-	"github.com/yacchi/go-ts-transpiler/goja_loader"
-	"github.com/yacchi/go-ts-transpiler/transpiler"
+	"github.com/yacchi/goja-ts-loader"
 )
 
 func main() {
-	ts, err := transpiler.NewTranspiler()
-	if err != nil {
-		panic(err)
-	}
-
 	vm := goja.New()
 
-	reg := require.NewRegistryWithLoader(goja_loader.TSLoader(ts, require.DefaultSourceLoader))
+	reg := require.NewRegistryWithLoader(loader.TSLoader(require.DefaultSourceLoader))
 	reg.Enable(vm)
 
 	var out interface{}
