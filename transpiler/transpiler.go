@@ -54,7 +54,7 @@ func NewTranspiler() (*Transpiler, error) {
 	vm := goja.New()
 
 	registry := require.NewRegistryWithLoader(func(path string) ([]byte, error) {
-		if f, err := assets.Root.Open(path); err != nil {
+		if f, err := assets.FS.Open(path); err != nil {
 			if os.IsNotExist(err) || errors.Is(err, syscall.EISDIR) {
 				err = require.ModuleFileDoesNotExistError
 			}

@@ -1,6 +1,6 @@
 module github.com/yacchi/go-ts-transpiler
 
-go 1.15
+go 1.16
 
 require (
 	github.com/dlclark/regexp2 v1.4.0 // indirect
