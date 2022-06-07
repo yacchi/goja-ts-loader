@@ -1,4 +1,4 @@
-# go-ts-transpiler
+# goja-ts-loader
 
 This is a Typescript transpiler use Official Typescript Compiler API, run under [goja](https://github.com/dop251/goja).
 
@@ -8,7 +8,7 @@ This is a Typescript transpiler use Official Typescript Compiler API, run under 
 package main
 
 import (
-	"github.com/yacchi/go-ts-transpiler/transpiler"
+	"github.com/yacchi/goja-ts-loader/transpiler"
 	"io/ioutil"
 	"os"
 )
@@ -49,19 +49,13 @@ import (
 	"fmt"
 	"github.com/dop251/goja"
 	"github.com/dop251/goja_nodejs/require"
-	"github.com/yacchi/go-ts-transpiler/goja_loader"
-	"github.com/yacchi/go-ts-transpiler/transpiler"
+	"github.com/yacchi/goja-ts-loader"
 )
 
 func main() {
-	ts, err := transpiler.NewTranspiler()
-	if err != nil {
-		panic(err)
-	}
-
 	vm := goja.New()
 
-	reg := require.NewRegistryWithLoader(goja_loader.TSLoader(ts, require.DefaultSourceLoader))
+	reg := require.NewRegistryWithLoader(loader.TSLoader(require.DefaultSourceLoader))
 	reg.Enable(vm)
 
 	var out interface{}
