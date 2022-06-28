@@ -64,13 +64,11 @@ func TSLoader(base require.SourceLoader, opts ...Option) require.SourceLoader {
 		opt(o)
 	}
 
-	tsc := o.tsc
-
-	if tsc == nil {
+	if o.tsc == nil {
 		if ts, err := transpiler.NewTranspiler(); err != nil {
 			panic(err)
 		} else {
-			tsc = ts
+			o.tsc = ts
 		}
 	}
 
